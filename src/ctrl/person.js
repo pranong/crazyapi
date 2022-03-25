@@ -1,10 +1,11 @@
-// const personService = require("../service/person");
+const db = require('../lib/knex')
 
 class PersonController {
   async createPerson(req, res) {
     try {
       console.log('yay req', req.body)
-      // req.body
+      let rows = await db('site')
+      console.log('knex', rows)
       // insert update delete
       //   const [id] = await db("person")
       //     .insert({
@@ -17,12 +18,13 @@ class PersonController {
       // res.send
       res.send({
         status: true,
+        data: rows,
         message: 'yay res',
       })
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
 }
 
-module.exports = new PersonController();
+module.exports = new PersonController()

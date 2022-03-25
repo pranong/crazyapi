@@ -4,7 +4,7 @@
   "description": "api for crazyfinds",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "cross-env DEBUG=1 NODE_ENV=development nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "pnkrwk",
@@ -12,6 +12,7 @@
   "dependencies": {
     "body-parser": "^1.19.2",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "express": "^4.17.3",
     "knex": "^1.0.4",
     "mysql": "^2.18.1",

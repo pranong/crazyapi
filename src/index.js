@@ -1,34 +1,32 @@
 const express = require('express')
-// const api = require("./api");
 const bodyParser = require('body-parser')
-// const cors = require("cors");
+const cors = require("cors");
 const app = express()
+// const fs = require('fs')
+// const path = require('path')
+const http = require('http').createServer(app)
+const util = require('./lib/util')
+const config = require('./config')
+const knex = require('./lib/knex')('claret', config[config.db])
+
+
 app.use(express.json())
-// app.use(api);
+app.use((req, res, next) => {
+  req.$db = knex
+  req.$util = util
+  req.$config = config
+  // req.$redis = asyncRedisClient
+  next()
+})
+app.use(cors())
 app.use(
   '/api',
   bodyParser.json({ limit: 1024 * 1024 * 1024 }),
   require('./api')
 )
 
-// var corsOptions = {
-// origin: "http://localhost:8081",
-// };
-// app.use(cors(corsOptions));
-
-// // parse requests of content-type - application/json
-// app.use(bodyParser.json());
-// // parse requests of content-type - application/x-www-form-urlencoded
-// app.use(bodyParser.urlencoded({ extended: true }));
-// //db sync
-// db.sequelize.sync();
-// // simple route
-// app.get("/", (req, res) => {
-//   res.json({ message: "Welcome to samrall application." });
-// });
-
 // // set port, listen for requests
-const PORT = process.env.PORT || 8080
+const PORT = config.port || 8080
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`)
 })

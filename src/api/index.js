@@ -1,7 +1,12 @@
 const express = require("express");
-const personController = require("../ctrl/person");
-
+const DonorController = require("../ctrl/donor")
+const personCtrl = require("../ctrl/person")
 const router = express.Router();
-router.post("/person", personController.createPerson);
+
+// Donor
+router.get("/donor", DonorController.searchDonor);
+
+// Person
+router.post("/person", personCtrl.createPerson);
 
 module.exports = router;

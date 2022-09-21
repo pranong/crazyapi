@@ -1,21 +1,20 @@
-const db = require('../lib/knex')
+const knex = require('../lib/knex')('claret')
+const ctrl = {}
+module.exports = ctrl
 
-class PersonController {
-  async createPerson(req, res) {
+ctrl.createPerson = async (req, res) => {
     try {
       console.log('yay req', req.body)
-      let rows = await db('site')
-      console.log('knex', rows)
+      let rows = await knex('site') // import and use
+      let queryFromReq = await req.$db('telType') // use from request
+      // console.log('knex', rows)
+      //util
+      await req.$util.promiseForEach(queryFromReq, async row => {
+        let { id, idx, productPrice, ...data } = row
+        console.log('=>', row.id)
+      })
       // insert update delete
-      //   const [id] = await db("person")
-      //     .insert({
-      //       email,
-      //       first_name: firstName,
-      //       last_name: lastName,
-      //     })
-      //     .returning("id");
-      //   return id;
-      // res.send
+      
       res.send({
         status: true,
         data: rows,
@@ -25,6 +24,3 @@ class PersonController {
       console.error(err)
     }
   }
-}
-
-module.exports = new PersonController()

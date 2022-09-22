@@ -11,7 +11,7 @@ const util = require('./lib/util')
 const config = require('./config')
 const schedule = require('node-schedule');
 const moment = require('dayjs')
-const knex = require('./lib/knex')('claret', config[config.db])
+const knex = require('./lib/knex')('mysql', config[config.db])
 
 
 app.use(express.json())

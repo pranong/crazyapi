@@ -1,4 +1,5 @@
 const path = require('path')
+const util = require('./lib/util')
 
 if (process.env.TELECAR && !process.env.TELECAR_CODE) {
   console.log('ERROR, Environment variable TELECAR_CODE is missing')
@@ -6,9 +7,8 @@ if (process.env.TELECAR && !process.env.TELECAR_CODE) {
 }
 
 module.exports = {
-  port: 8080,
 
-  db: process.env.CLARET_DB || 'claret',
+  db: process.env.CLARET_DB || 'mysql',
 
   claret: {
     driver: 'oracledb',
@@ -62,15 +62,54 @@ module.exports = {
   mysql: {
     driver: 'mysql',
     param: {
-      host: 'lucy-mysql',
+      host: 'sql6.freemysqlhosting.net',
       port: 3306,
-      user: 'lucy',
-      password: 'lucy!4555',
-      database: 'lucy',
+      user: 'sql6521461',
+      password: 'jzivRzl4yt',
+      database: 'sql6521461',
       supportBigNumber: true,
       timezone: '+7:00',
       dateStrings: true,
       charset: 'utf8mb4_unicode_ci',
+    },
+    // fetchAsString: [ 'date', 'clob' ],
+    // test: 1,
+    // pool: {
+    //   min: 10,
+    //   max: parseInt(process.env.DB_MAX_POOL || ((process.env.DOCKER || process.env.TELECAR) ? 100 : 10)),
+    //   createTimeoutMillis: parseInt(process.env.DB_TIMEOUT || 30) * 1000,
+    //   acquireTimeoutMillis: parseInt(process.env.DB_TIMEOUT || 30) * 1000,
+    //   idleTimeoutMillis: parseInt(process.env.DB_TIMEOUT || 30) * 1000,
+    //   reapIntervalMillis: 1000,
+    //   createRetryIntervalMillis: 100,
+    //   propagateCreateError: false,
+    //   validate: async res => {
+    //     console.log('knex validate...')
+    //     try {
+    //       await res.raw('select 1 from dual')
+    //       console.log('knex validate true')
+    //       return true
+    //     } catch (e) {
+    //       console.log('knex validate false')
+    //       return false
+    //     }
+    //   },
+    // },
+    postProcessResponse(result, isRaw) {
+      if (isRaw) {
+        return result
+      }
+      if (Array.isArray(result)) {
+        return result.map(row => util.snakeToCamel(row))
+      } else {
+        return util.snakeToCamel(result)
+      }
+    },
+    wrapIdentifier(value) {
+      if (value === '*') {
+        return value
+      }
+      return util.camelToSnake(value)
     },
   },
 

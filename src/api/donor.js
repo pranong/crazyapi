@@ -4,4 +4,4 @@ const donorCtrl = require('../ctrl/donor')
 const router = express.Router()
 module.exports = router
 
-router.get('/donor', donorCtrl.searchDonor)
+router.get('/search-donor', donorCtrl.searchDonor)

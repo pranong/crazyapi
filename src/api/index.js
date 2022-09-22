@@ -1,12 +1,13 @@
 const express = require("express");
-const DonorController = require("../ctrl/donor")
-const personCtrl = require("../ctrl/person")
-const router = express.Router();
 
-// Donor
-router.get("/donor", DonorController.searchDonor);
+const router = express.Router()
+module.exports = router
 
-// Person
-router.post("/person", personCtrl.createPerson);
+router.use('/person', require('./person'))
+router.use('/donor', require('./donor'))
 
-module.exports = router;
+router.get('/', (req, res) => {
+    res.send({
+      status: true,
+    })
+  })

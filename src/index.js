@@ -75,7 +75,7 @@ async function ensureFolder(folder) {
 }
 
 // ---------------------------- APIs SERVICE ----------------------------
-const PORT = config.port || 8080
+const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
   console.log(`running at http://localhost:${PORT}`)
 })

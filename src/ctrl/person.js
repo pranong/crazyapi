@@ -9,25 +9,26 @@ ctrl.createPerson = async (req, res) => {
     try {
       console.log('yay req', req.body)
       // let rows = await knex('site') // import and use
-      let staff = await req.$db('staff').where('code', 'naaNut    ')
-      let date = dayjs().format('DDMMYY')
-      let outFilename = `reportTest${date}.docx`
-      let outputFile = path.resolve('./public/' + outFilename)
-      await createReport({
-        cmdDelimiter: '`',
-        template: './reports/template.docx',
-        output: outputFile,
-        data: {
-          list: staff,
-          name: 'NutJa',
-          age: 69
-        },
-        })
-      console.log('data', staff)
+      // let staff = await req.$db('staff').where('code', 'naaNut    ')
+      // let date = dayjs().format('DDMMYY')
+      // let outFilename = `reportTest${date}.docx`
+      // let outputFile = path.resolve('./public/' + outFilename)
+      // await createReport({
+      //   cmdDelimiter: '`',
+      //   template: './reports/template.docx',
+      //   output: outputFile,
+      //   data: {
+      //     list: staff,
+      //     name: 'NutJa',
+      //     age: 69
+      //   },
+      //   })
+      // console.log('data', staff)
 
       res.send({
         status: true,
-        staff
+        message: 'Yayyy'
+        // staff
       })
       //util
       await req.$util.promiseForEach(staff, async row => {

@@ -27,52 +27,52 @@ app.use(cors())
 // ---------------------------- Schedule ----------------------------
 // const date = new Date(2012, 11, 21, 5, 30, 0);
 // const job = schedule.scheduleJob({ hour: 10, minute: 18 }, async function () { // at 10:15 daily
-const job = schedule.scheduleJob('5 * * * * *', async () => { // at 10:15 daily
-  let res = await genLog()
-    if (!res.status) {
-        console.log('Gen file Failed at', res.path, moment().format('YYYYMMDD'))
-    } else {
-        console.log('Gen file successfully at', res.path, moment().format('YYYYMMDD'));
-    }
+// const job = schedule.scheduleJob('5 * * * * *', async () => { // at 10:15 daily
+//   let res = await genLog()
+//     if (!res.status) {
+//         console.log('Gen file Failed at', res.path, moment().format('YYYYMMDD'))
+//     } else {
+//         console.log('Gen file successfully at', res.path, moment().format('YYYYMMDD'));
+//     }
     
-});
-async function genLog() {
-  return new Promise(async resolve => {
-    try {
-      let pathExport = './public/log'
-      let filename = `log-${moment().format('YYYYMMDD')}.txt`
-      var fs = require('fs')
-      await ensureFolder(pathExport)
-      fs.appendFile(path.resolve(pathExport, filename), `new-${moment().format('YYYY/MM/DD-hh:mm:ss')}\n`, function (err) {
-        if (err) {
-          console.log('err', err)
-          resolve({ status: false, err: 'Cannot gen txt file', path: pathExport + '/' + filename })
-        } else {
-          console.log('DONE', pathExport + '/' + filename)
-          resolve({ status: true, path: pathExport + '/' + filename })
-        }
-      })
-    } catch (error) {
-      var fs = require('fs')
-      fs.appendFile(path.resolve(pathExport, filename), 'new data err', function (err) {
-        if (err) {
-          console.log('err', err)
-          resolve({ status: false, err: `Cannot gen txt file, ${error}`, path: pathExport + '/' + filename })
-        }
-        console.log('err', error)
-        resolve({ status: false, err: error, path: pathExport + '/' + filename })
-      })
-    }
-  })
-}
-async function ensureFolder(folder) {
-  try {
-    await fsp.stat(folder)
-  } catch (e) {
-    console.log('ensure', e)
-    await fsp.mkdir(folder)
-  }
-}
+// });
+// async function genLog() {
+//   return new Promise(async resolve => {
+//     try {
+//       let pathExport = './public/log'
+//       let filename = `log-${moment().format('YYYYMMDD')}.txt`
+//       var fs = require('fs')
+//       await ensureFolder(pathExport)
+//       fs.appendFile(path.resolve(pathExport, filename), `new-${moment().format('YYYY/MM/DD-hh:mm:ss')}\n`, function (err) {
+//         if (err) {
+//           console.log('err', err)
+//           resolve({ status: false, err: 'Cannot gen txt file', path: pathExport + '/' + filename })
+//         } else {
+//           console.log('DONE', pathExport + '/' + filename)
+//           resolve({ status: true, path: pathExport + '/' + filename })
+//         }
+//       })
+//     } catch (error) {
+//       var fs = require('fs')
+//       fs.appendFile(path.resolve(pathExport, filename), 'new data err', function (err) {
+//         if (err) {
+//           console.log('err', err)
+//           resolve({ status: false, err: `Cannot gen txt file, ${error}`, path: pathExport + '/' + filename })
+//         }
+//         console.log('err', error)
+//         resolve({ status: false, err: error, path: pathExport + '/' + filename })
+//       })
+//     }
+//   })
+// }
+// async function ensureFolder(folder) {
+//   try {
+//     await fsp.stat(folder)
+//   } catch (e) {
+//     console.log('ensure', e)
+//     await fsp.mkdir(folder)
+//   }
+// }
 
 // ---------------------------- APIs SERVICE ----------------------------
 const PORT = process.env.PORT || 8080

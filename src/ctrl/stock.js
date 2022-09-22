@@ -1,6 +1,10 @@
 const knex = require('../lib/knex')('mysql')
-class DonorController {
-  async searchDonor(req, res) {
+const path = require('path')
+const dayjs = require('dayjs')
+const ctrl = {}
+module.exports = ctrl
+
+ctrl.getStock = async (req, res) => {
     try {
       console.log('Pass', req.body)
       let rows = await knex('stock')
@@ -8,12 +12,9 @@ class DonorController {
       res.send({
         status: 100,
         message: 'Donor Requst',
-        data: rows,
+        items: rows,
       })
     } catch (err) {
       console.error(err)
     }
-  }
 }
-
-module.exports = new DonorController()

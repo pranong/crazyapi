@@ -1,0 +1,20 @@
+const knex = require('../lib/knex')('mysql')
+const path = require('path')
+const dayjs = require('dayjs')
+const ctrl = {}
+module.exports = ctrl
+
+ctrl.getSetting = async (req, res) => {
+    try {
+      console.log('Pass', req.body)
+      if (!req.body) throw new Error('settings is require')
+      let tableCode = req.body.tableCode || []
+      let rows = await knex('settings').whereIn('tableCode', tableCode)
+      res.send({
+        status: true,
+        rows,
+      })
+    } catch (err) {
+      console.error(err)
+    }
+}

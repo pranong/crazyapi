@@ -4,7 +4,8 @@ const router = express.Router()
 module.exports = router
 
 router.use('/person', require('./person'))
-router.use('/donor', require('./donor'))
+router.use('/stock', require('./stock'))
+router.use('/setting', require('./setting'))
 
 router.get('/', (req, res) => {
     res.send({

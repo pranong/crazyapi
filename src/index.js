@@ -1,28 +1,27 @@
-const express = require('express')
-const fsp = require('fs').promises
-const bodyParser = require('body-parser')
-const cors = require("cors");
-const app = express()
+const express = require('express');
+const fsp = require('fs').promises;
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const app = express();
 // const fs = require('fs')
 // const path = require('path')
-const http = require('http').createServer(app)
-const path = require('path')
-const util = require('./lib/util')
-const config = require('./config')
+const http = require('http').createServer(app);
+const path = require('path');
+const util = require('./lib/util');
+const config = require('./config');
 const schedule = require('node-schedule');
-const moment = require('dayjs')
-const knex = require('./lib/knex')('mysql', config[config.db])
+const moment = require('dayjs');
+const knex = require('./lib/knex')('mysql', config[config.db]);
 
-
-app.use(express.json())
+app.use(express.json());
 app.use((req, res, next) => {
-  req.$db = knex
-  req.$util = util
-  req.$config = config
+  req.$db = knex;
+  req.$util = util;
+  req.$config = config;
   // req.$redis = asyncRedisClient
-  next()
-})
-app.use(cors())
+  next();
+});
+app.use(cors());
 
 // ---------------------------- Schedule ----------------------------
 // const date = new Date(2012, 11, 21, 5, 30, 0);
@@ -34,7 +33,7 @@ app.use(cors())
 //     } else {
 //         console.log('Gen file successfully at', res.path, moment().format('YYYYMMDD'));
 //     }
-    
+
 // });
 // async function genLog() {
 //   return new Promise(async resolve => {
@@ -75,8 +74,12 @@ app.use(cors())
 // }
 
 // ---------------------------- APIs SERVICE ----------------------------
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
-  console.log(`running at http://localhost:${PORT}`)
-})
-app.use('/api', bodyParser.json({ limit: 1024 * 1024 * 1024 }), require('./api'))
+  console.log(`running at http://localhost:${PORT}`);
+});
+app.use(
+  '/api',
+  bodyParser.json({ limit: 1024 * 1024 * 1024 }),
+  require('./api')
+);

@@ -1,5 +1,6 @@
 const path = require('path')
 const util = require('./lib/util')
+require('dotenv').config();
 
 if (process.env.TELECAR && !process.env.TELECAR_CODE) {
   console.log('ERROR, Environment variable TELECAR_CODE is missing')
@@ -10,22 +11,27 @@ module.exports = {
 
   db: process.env.CLARET_DB || 'mysql',
 
-  claret: {
-    driver: 'oracledb',
+  mysql: {
+    driver: 'mysql',
     param: {
-      user: process.env.DB_USER || 'claret',
-      password: process.env.DB_PASS || 'g8iupf',
-      connectString: process.env.DB_CONNECT || (process.env.TELECAR ? '127.0.0.1/CLARET' : '10.0.2.221:15221/CLARET'),
-      acquireConnectionTimeout: 60 * 1000,
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
+      supportBigNumber: true,
+      timezone: '+7:00',
+      dateStrings: true,
+      charset: 'utf8mb4_unicode_ci',
     },
     fetchAsString: [ 'date', 'clob' ],
-    test: 1,
+    // test: 1,
     pool: {
       min: 10,
-      max: parseInt(process.env.DB_MAX_POOL || ((process.env.DOCKER || process.env.TELECAR) ? 100 : 10)),
-      createTimeoutMillis: parseInt(process.env.DB_TIMEOUT || 30) * 1000,
-      acquireTimeoutMillis: parseInt(process.env.DB_TIMEOUT || 30) * 1000,
-      idleTimeoutMillis: parseInt(process.env.DB_TIMEOUT || 30) * 1000,
+      max: 100,
+      createTimeoutMillis: 30 * 1000,
+      acquireTimeoutMillis: 30 * 1000,
+      idleTimeoutMillis: 30 * 1000,
       reapIntervalMillis: 1000,
       createRetryIntervalMillis: 100,
       propagateCreateError: false,
@@ -41,60 +47,6 @@ module.exports = {
         }
       },
     },
-    postProcessResponse(result, isRaw) {
-      if (isRaw) {
-        return result
-      }
-      if (Array.isArray(result)) {
-        return result.map(row => snakeToCamel(row))
-      } else {
-        return snakeToCamel(result)
-      }
-    },
-    wrapIdentifier(value) {
-      if (value === '*') {
-        return value
-      }
-      return '"' + camelToSnake(value) + '"'
-    },
-  },
-
-  mysql: {
-    driver: 'mysql',
-    param: {
-      host: 'sql6.freemysqlhosting.net',
-      port: 3306,
-      user: 'sql6521461',
-      password: 'jzivRzl4yt',
-      database: 'sql6521461',
-      supportBigNumber: true,
-      timezone: '+7:00',
-      dateStrings: true,
-      charset: 'utf8mb4_unicode_ci',
-    },
-    // fetchAsString: [ 'date', 'clob' ],
-    // test: 1,
-    // pool: {
-    //   min: 10,
-    //   max: parseInt(process.env.DB_MAX_POOL || ((process.env.DOCKER || process.env.TELECAR) ? 100 : 10)),
-    //   createTimeoutMillis: parseInt(process.env.DB_TIMEOUT || 30) * 1000,
-    //   acquireTimeoutMillis: parseInt(process.env.DB_TIMEOUT || 30) * 1000,
-    //   idleTimeoutMillis: parseInt(process.env.DB_TIMEOUT || 30) * 1000,
-    //   reapIntervalMillis: 1000,
-    //   createRetryIntervalMillis: 100,
-    //   propagateCreateError: false,
-    //   validate: async res => {
-    //     console.log('knex validate...')
-    //     try {
-    //       await res.raw('select 1 from dual')
-    //       console.log('knex validate true')
-    //       return true
-    //     } catch (e) {
-    //       console.log('knex validate false')
-    //       return false
-    //     }
-    //   },
-    // },
     postProcessResponse(result, isRaw) {
       if (isRaw) {
         return result

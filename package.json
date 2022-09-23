@@ -15,6 +15,7 @@
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.5",
     "docx-templates": "^4.9.2",
+    "dotenv": "^16.0.2",
     "express": "^4.17.3",
     "knex": "^2.3.0",
     "mkdirp": "^1.0.4",

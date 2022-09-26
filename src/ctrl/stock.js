@@ -18,3 +18,18 @@ ctrl.getStock = async (req, res) => {
       console.error(err)
     }
 }
+
+ctrl.getStockItem = async (req, res) => {
+  try {
+    console.log('Pass', req.body)
+    if (!req.body.stkId) throw new Error('StkId is required')
+    let rows = await knex('stock').where('stkId', req.body.stkId)
+    res.send({
+      status: 100,
+      message: 'Donor Requst',
+      items: rows.length ? rows[0] : null,
+    })
+  } catch (err) {
+    console.error(err)
+  }
+}

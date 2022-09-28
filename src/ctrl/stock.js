@@ -7,7 +7,16 @@ module.exports = ctrl
 ctrl.getStock = async (req, res) => {
     try {
       console.log('Pass', req.body)
-      let rows = await knex('stock')
+      let rows = []
+      let type = req.body.type || null
+      let query = req.body.query || null
+      if (type) {
+        this.where('type', '=', type)
+      }
+      if (query) {
+        this.where('name', 'like', `%${query}%`)
+      }
+      rows = await knex('stock')
       console.log('knex', rows[0].stkId)
       res.send({
         status: 100,

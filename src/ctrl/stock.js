@@ -10,13 +10,15 @@ ctrl.getStock = async (req, res) => {
       let rows = []
       let type = req.body.type || null
       let query = req.body.query || null
-      if (type) {
-        this.where('type', '=', type)
+      let cond = function() {
+        if (type) {
+          this.where('type', '=', type)
+        }
+        if (query) {
+          this.where('name', 'like', `%${query}%`)
+        }
       }
-      if (query) {
-        this.where('name', 'like', `%${query}%`)
-      }
-      rows = await knex('stock')
+      rows = await knex('stock').where(cond)
       console.log('knex', rows[0].stkId)
       res.send({
         status: 100,

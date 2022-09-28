@@ -19,7 +19,6 @@ ctrl.getStock = async (req, res) => {
         }
       }
       rows = await knex('stock').where(cond)
-      console.log('knex', rows[0].stkId)
       res.send({
         status: 100,
         message: 'Donor Requst',

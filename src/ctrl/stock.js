@@ -5,28 +5,37 @@ const ctrl = {}
 module.exports = ctrl
 
 ctrl.getStock = async (req, res) => {
-    try {
-      console.log('Pass', req.body)
-      let rows = []
-      let type = req.body.type || null
-      let query = req.body.query || null
-      let cond = function() {
-        if (type) {
-          this.where('type', '=', type)
-        }
-        if (query) {
-          this.where('name', 'like', `%${query}%`)
-        }
-      }
-      rows = await knex('stock').where(cond)
-      res.send({
-        status: 100,
-        message: 'Donor Requst',
-        items: rows,
-      })
-    } catch (err) {
-      console.error(err)
+  try {
+    console.log('Pass', req.body)
+    let rows = []
+    let param = ''
+    let checkSearch = req.body.data.includes('search?q=')
+    let checkType = false
+    if (checkSearch) {
+      param = req.body.data.substr(9)
+    } else {
+      checkType = true
+      param = req.body.data.substr(0, 1)
     }
+    // let type = req.body.type || null
+    // let query = req.body.query || null
+    let cond = function () {
+      if (checkType) {
+        this.where('type', '=', param)
+      }
+      if (checkSearch) {
+        this.where('name', 'like', `%${param}%`)
+      }
+    }
+    rows = await knex('stock').where(cond)
+    res.send({
+      status: 100,
+      message: 'Donor Requst',
+      items: rows,
+    })
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 ctrl.getStockItem = async (req, res) => {

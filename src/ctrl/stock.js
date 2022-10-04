@@ -13,7 +13,7 @@ ctrl.getStock = async (req, res) => {
     let checkType = false
     if (checkSearch) {
       param = req.body.data.substr(9)
-    } else {
+    } else if (req.body.data) {
       checkType = true
       param = req.body.data.substr(0, 1)
     }

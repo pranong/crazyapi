@@ -9,7 +9,7 @@ ctrl.getStock = async (req, res) => {
     console.log('Pass', req.body)
     let rows = []
     let param = ''
-    let checkSearch = req.body.data.includes('search?q=')
+    let checkSearch = req.body.data && req.body.data.includes('search?q=')
     let checkType = false
     if (checkSearch) {
       param = req.body.data.substr(9)

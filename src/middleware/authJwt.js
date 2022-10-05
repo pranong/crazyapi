@@ -47,6 +47,7 @@ isAdmin = async (req, res, next) => {
         return;
     }
     res.status(403).send({
+        status: false,
         message: "Require Admin Role!"
     });
     return;
@@ -69,6 +70,7 @@ isModerator = async (req, res, next) => {
         return;
     }
     res.status(403).send({
+        status: false,
         message: "Require Moderator Role!"
     });
     return;
@@ -92,7 +94,8 @@ isModeratorOrAdmin = async (req, res, next) => {
         return;
     }
     res.status(403).send({
-        message: "Require Admin Role!"
+        status: false,
+        message: "Require Admin/Moderator Role!"
     });
     return;
 };

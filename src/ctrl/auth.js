@@ -21,7 +21,7 @@ ctrl.signin = async (req, res) => {
   try {
     let userCheck = await req.$db('users').where('username', req.body.username)
     if (!userCheck.length) {
-      return res.status(404).send({ message: "User Not found." })
+      return res.status(404).send({ status: false, message: "User Not found." })
 
     }
     let user = userCheck[0]
@@ -31,6 +31,7 @@ ctrl.signin = async (req, res) => {
     );
     if (!passwordIsValid) {
       return res.status(401).send({
+        status: false,
         accessToken: null,
         message: "Invalid Password!"
       });
@@ -46,6 +47,7 @@ ctrl.signin = async (req, res) => {
       authorities.push("ROLE_" + roleName.toUpperCase());
     }
     return res.status(200).send({
+      status: true,
       id: user.id,
       username: user.username,
       email: user.email,

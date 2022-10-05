@@ -13,15 +13,27 @@ const schedule = require('node-schedule');
 const moment = require('dayjs');
 const knex = require('./lib/knex')('mysql', config[config.db]);
 
+// ---------------------------- SETUP ----------------------------
+// use cors
+app.use(cors());
+// app.use(cors(corsOptions));
+// parse requests of content-type - application/json
 app.use(express.json());
+// parse requests of content-type - application/x-www-form-urlencoded
+// app.use(express.urlencoded({ extended: true }));
+// setup header and global use
 app.use((req, res, next) => {
+  // res.header(
+  //   "Access-Control-Allow-Headers",
+  //   "x-access-token, Origin, Content-Type, Accept"
+  // );
   req.$db = knex;
   req.$util = util;
   req.$config = config;
   // req.$redis = asyncRedisClient
   next();
 });
-app.use(cors());
+
 
 // ---------------------------- Schedule ----------------------------
 // const date = new Date(2012, 11, 21, 5, 30, 0);
@@ -74,7 +86,7 @@ app.use(cors());
 // }
 
 // ---------------------------- APIs SERVICE ----------------------------
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8085;
 app.listen(PORT, () => {
   console.log(`running at http://localhost:${PORT}`);
 });

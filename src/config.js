@@ -8,7 +8,7 @@ if (process.env.TELECAR && !process.env.TELECAR_CODE) {
 }
 
 module.exports = {
-
+  secret: process.env.ACCESS_SECRET || "bezkoder-secret-key",
   db: process.env.CLARET_DB || 'mysql',
 
   mysql: {
@@ -24,7 +24,7 @@ module.exports = {
       dateStrings: true,
       charset: 'utf8mb4_unicode_ci',
     },
-    fetchAsString: [ 'date', 'clob' ],
+    fetchAsString: ['date', 'clob'],
     // test: 1,
     pool: {
       min: 10,
